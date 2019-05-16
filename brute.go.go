@@ -11,13 +11,8 @@ func Brute(charset []rune, minLen, maxLen, buffer int) (combos <-chan string, cl
 	results := make(chan string, buffer)
 	done := make(chan struct{})
 	charlen := len(charset)
-
-	if minLen < 1 {
-		panic("min length should be greater than 0")
-	}
-
-	if minLen > maxLen {
-		panic("max length should be greater than max length")
+	if minLen == 0 {
+		minLen = 1
 	}
 
 	go func() {

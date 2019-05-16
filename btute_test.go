@@ -8,10 +8,11 @@ import (
 func TestABFixed(t *testing.T) {
 	res := []string{"AA", "AB", "BA", "BB"}
 
-	b, c := Brute([]rune("AB"), 2, 4, true)
+	b, c := Brute([]rune("AB"), 2, 2, 4)
 	defer c()
 	i := 0
 	for c := range b {
+		t.Log(c)
 		if res[i] != c {
 			t.Fail()
 		}
@@ -22,7 +23,7 @@ func TestABFixed(t *testing.T) {
 func TestABNotFixed(t *testing.T) {
 	res := []string{"A", "B", "AA", "AB", "BA", "BB"}
 
-	b, c := Brute([]rune("AB"), 2, 4, false)
+	b, c := Brute([]rune("AB"), 1, 2, 4)
 	defer c()
 	i := 0
 	for c := range b {
@@ -33,7 +34,7 @@ func TestABNotFixed(t *testing.T) {
 	}
 }
 func TestNumberFixed(t *testing.T) {
-	b, c := Brute([]rune("0123456789"), 6, 1000, true)
+	b, c := Brute([]rune("0123456789"), 6, 6, 1000)
 	defer c()
 	i := 0
 	for c := range b {
