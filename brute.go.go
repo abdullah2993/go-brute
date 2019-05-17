@@ -1,5 +1,7 @@
 package brute
 
+import "sync"
+
 // Brute returns a channel of all possible combinations of a characterset.
 // charset is the characterset to be used, minLen is the minimum length of
 // combinations and should be greater than 0 it will panic otherwise, maxLen is the
@@ -11,12 +13,21 @@ func Brute(charset []rune, minLen, maxLen, buffer int) (combos <-chan string, cl
 	results := make(chan string, buffer)
 	done := make(chan struct{})
 	charlen := len(charset)
+	once := new(sync.Once)
+
+	closer = func() {
+		once.Do(func() {
+			close(done)
+		})
+	}
+
 	if minLen == 0 {
 		minLen = 1
 	}
 
 	go func() {
 		defer close(results)
+		defer closer()
 		for k := minLen; k <= maxLen; k++ {
 			carry := 0
 			indices := make([]int, k)
@@ -52,8 +63,5 @@ func Brute(charset []rune, minLen, maxLen, buffer int) (combos <-chan string, cl
 		}
 
 	}()
-
-	return results, func() {
-		close(done)
-	}
+	return results, closer
 }
