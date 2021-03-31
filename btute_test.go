@@ -1,6 +1,7 @@
 package brute
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 )
@@ -44,4 +45,21 @@ func TestNumberFixed(t *testing.T) {
 		}
 		i++
 	}
+}
+
+func ExampleBrute() {
+	characterSer := []rune("AB")
+	minLen := 1
+	maxLen := 2
+	b, _ := Brute(characterSer, minLen, maxLen, 4)
+	for combination := range b {
+		fmt.Println(combination)
+	}
+	// Output:
+	// A
+	// B
+	// AA
+	// AB
+	// BA
+	// BB
 }
